@@ -1,0 +1,43 @@
+"""vendor_returns - create vendor_returns table
+
+Revision ID: 0008_vendor_returns
+Revises: 0007_bank_details
+Create Date: 2026-04-09
+"""
+from typing import Sequence, Union
+from alembic import op
+import sqlalchemy as sa
+
+revision: str = "0008_vendor_returns"
+down_revision: Union[str, None] = "0007_bank_details"
+branch_labels: Union[str, Sequence[str], None] = None
+depends_on: Union[str, Sequence[str], None] = None
+
+
+def upgrade() -> None:
+    op.create_table(
+        "vendor_returns",
+        sa.Column("id", sa.String(36), primary_key=True),
+        sa.Column("vendor_id", sa.String(36),
+                  sa.ForeignKey("users.id", ondelete="CASCADE"), nullable=False),
+        sa.Column("organization_id", sa.String(36),
+                  sa.ForeignKey("organizations.id", ondelete="CASCADE"), nullable=False),
+        sa.Column("return_id", sa.String(30), unique=True, nullable=False),
+        sa.Column("order_id", sa.String(50), nullable=False),
+        sa.Column("product", sa.String(300), nullable=False),
+        sa.Column("quantity", sa.Integer, nullable=True),
+        sa.Column("reason", sa.Text, nullable=False),
+        sa.Column("status", sa.String(20), nullable=False, server_default="pending"),
+        sa.Column("refund_amount", sa.Numeric(12, 2), nullable=True),
+        sa.Column("requested_on", sa.String(20), nullable=False),
+        sa.Column("created_at", sa.DateTime(timezone=True),
+                  server_default=sa.text("now()"), nullable=False),
+        sa.Column("updated_at", sa.DateTime(timezone=True),
+                  server_default=sa.text("now()"), nullable=False),
+    )
+    op.create_index("ix_vendor_returns_vendor_id", "vendor_returns", ["vendor_id"])
+
+
+def downgrade() -> None:
+    op.drop_index("ix_vendor_returns_vendor_id", "vendor_returns")
+    op.drop_table("vendor_returns")
