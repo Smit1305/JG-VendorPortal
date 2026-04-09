@@ -79,9 +79,11 @@ const adminSections = [
   {
     cap: "VENDOR MANAGEMENT",
     links: [
-      { to: "/admin/vendors",         icon: Icon.users,  label: "Verified Vendors" },
-      { to: "/admin/pending-vendors", icon: Icon.check,  label: "Non-Verified Vendors" },
-      { to: "/admin/users",           icon: Icon.user,   label: "All Users" },
+      { to: "/admin/vendors",         icon: Icon.users,      label: "Verified Vendors" },
+      { to: "/admin/pending-vendors", icon: Icon.check,      label: "Non-Verified Vendors" },
+      { to: "/admin/users",           icon: Icon.user,       label: "All Users" },
+      { to: "/admin/loans",           icon: Icon.creditcard, label: "Loan Applications" },
+      { to: "/admin/tickets",         icon: Icon.headset,    label: "Support Tickets" },
     ],
   },
   {

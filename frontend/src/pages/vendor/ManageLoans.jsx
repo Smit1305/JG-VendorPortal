@@ -192,7 +192,7 @@ export default function ManageLoans() {
                   loans.map(loan => (
                     <tr key={loan.id} className="hover:bg-gray-50 transition">
                       <td className="px-5 py-4 font-mono text-xs font-semibold text-gray-700">{loan.id}</td>
-                      <td className="px-5 py-4 text-sm text-gray-700">{loan.purpose?.substring(0, 30) || "—"}</td>
+                      <td className="px-5 py-4 text-sm text-gray-700">{loan.loan_type || "—"}</td>
                       <td className="px-5 py-4 text-sm font-semibold text-gray-900">₹{loan.amount}</td>
                       <td className="px-5 py-4 text-sm text-gray-600">{loan.applied_on || loan.created_at?.split("T")[0] || "—"}</td>
                       <td className="px-5 py-4 text-sm text-gray-600">{loan.disbursed_on || "—"}</td>

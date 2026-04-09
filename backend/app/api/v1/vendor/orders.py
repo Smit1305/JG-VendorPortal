@@ -19,8 +19,9 @@ from app.models.payment import Payment
 from app.models.vendor_profile import VendorProfile
 from app.models.vendor_return import VendorReturn
 from app.models.support_ticket import SupportTicket
+from app.models.user import User
 from app.schemas.loan import LoanApplyRequest
-from app.services import email_service, loan_service, loyalty_service
+from app.services import email_service, loan_service, loyalty_service, notification_service
 
 router = APIRouter()
 
@@ -780,6 +781,18 @@ async def create_support_ticket(
     await db.commit()
     await db.refresh(ticket)
 
+    # Notify all admin users about the new ticket
+    admins_result = await db.execute(select(User).where(User.role == "admin"))
+    for admin in admins_result.scalars().all():
+        await notification_service.create_notification(
+            db,
+            user_id=admin.id,
+            title="New Support Ticket",
+            message=f"{vendor.name} raised ticket {ticket_id}: {payload.subject}",
+            type="support",
+            link="/admin/tickets",
+        )
+
     return success("Support ticket created. Our team will respond within 24 hours.", data={
         "id": ticket.ticket_id,
         "subject": ticket.subject,
@@ -824,6 +837,19 @@ async def reply_to_ticket(
     ticket.messages = msgs
     flag_modified(ticket, "messages")
     await db.commit()
+
+    # Notify all admin users of vendor reply
+    admins_result = await db.execute(select(User).where(User.role == "admin"))
+    for admin in admins_result.scalars().all():
+        await notification_service.create_notification(
+            db,
+            user_id=admin.id,
+            title="Vendor Replied to Ticket",
+            message=f"{vendor.name} replied on ticket {ticket.ticket_id}: {ticket.subject}",
+            type="support",
+            link="/admin/tickets",
+        )
+
     return success("Reply sent successfully")
 
 

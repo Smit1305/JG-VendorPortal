@@ -140,6 +140,13 @@ export const adminApi = {
   },
   deleteVendorDocument: (vendorId, docType) => api.delete(`/admin/vendors/${vendorId}/documents/${docType}`),
   deleteVendorDocumentEntry: (vendorId, docType, fileIndex) => api.delete(`/admin/vendors/${vendorId}/documents/${docType}/${fileIndex}`),
+  // Admin loans
+  getLoans: () => api.get("/admin/loans"),
+  updateLoan: (id, payload) => api.patch(`/admin/loans/${id}`, payload),
+  // Admin tickets
+  getTickets: (status) => api.get("/admin/tickets", { params: status ? { status } : {} }),
+  replyToTicket: (ticketId, payload) => api.post(`/admin/tickets/${ticketId}/reply`, payload),
+  updateTicketStatus: (ticketId, status) => api.patch(`/admin/tickets/${ticketId}/status`, { status }),
   // Admin notifications
   getNotifications: () => api.get("/admin/notifications"),
   markNotificationRead: (id) => api.patch(`/admin/notifications/${id}/read`),

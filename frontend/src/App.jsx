@@ -36,6 +36,8 @@ import SupportRequests from "./pages/vendor/SupportRequests.jsx";
 
 // Admin
 import AdminDashboard from "./pages/AdminDashboard.jsx";
+import AdminLoans from "./pages/admin/AdminLoans.jsx";
+import AdminTickets from "./pages/admin/AdminTickets.jsx";
 import AdminProfile from "./pages/admin/AdminProfile.jsx";
 import AllUsers from "./pages/admin/AllUsers.jsx";
 import AllVendors from "./pages/admin/AllVendors.jsx";
@@ -114,6 +116,8 @@ export default function App() {
         <Route path="/admin/company" element={<A><CompanyProfile /></A>} />
         <Route path="/admin/vendors/:id" element={<A><VendorDetail /></A>} />
         <Route path="/admin/profile" element={<A><AdminProfile /></A>} />
+        <Route path="/admin/loans" element={<A><AdminLoans /></A>} />
+        <Route path="/admin/tickets" element={<A><AdminTickets /></A>} />
 
         {/* Fallback */}
         <Route path="/" element={<Navigate to="/login" replace />} />
